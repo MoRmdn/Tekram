@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-# tekram
-=======
 # Tekram
->>>>>>> b627edf99a26feb6b3b71ba196cbafd7661a24a6
 
 A new Flutter project.
 
