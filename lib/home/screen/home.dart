@@ -1,17 +1,12 @@
 import 'package:firebase_database/firebase_database.dart';
-
 import 'package:flutter/material.dart';
-import 'package:newproject/authentication/repository/authentication_repository.dart';
-import 'package:newproject/authentication/repository/user_repo.dart';
-import 'package:newproject/authentication/screens/signup.dart';
-import 'package:newproject/component/const.dart';
-import 'package:newproject/home/screen/add_new_servise.dart';
-
-import 'package:newproject/map/screen/map.dart';
 import 'package:provider/provider.dart';
+import 'package:tekram/authentication/repository/user_repo.dart';
+import 'package:tekram/authentication/screens/signup.dart';
+import 'package:tekram/component/const.dart';
+import 'package:tekram/map/screen/map.dart';
 
 import '../../authentication/model/servise.dart';
-import '../../map/location_repository/location.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -103,7 +98,7 @@ class _HomeState extends State<Home> {
                                       bottom: size.height * 0.02),
                                   decoration: BoxDecoration(
                                       color: services[index].state == 1
-                                          ? Color(mainColor)
+                                          ? const Color(mainColor)
                                           : Colors.white,
                                       boxShadow: [
                                         BoxShadow(
@@ -118,7 +113,7 @@ class _HomeState extends State<Home> {
                                     leading: Image.asset(
                                       services[index].state == 1
                                           ? 'assets/image/Group 36.png'
-                                          : 'assets/image/المشروع-03 1.png',
+                                          : 'assets/image/project03.png',
                                     ),
                                     title: Text(
                                       services[index].users?.name ?? '',

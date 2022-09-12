@@ -1,19 +1,18 @@
 import 'dart:async';
-import 'dart:typed_data';
 import 'dart:ui' as ui;
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:newproject/authentication/model/servise.dart';
-import 'package:newproject/authentication/repository/authentication_repository.dart';
-import 'package:newproject/authentication/screens/signup.dart';
-import 'package:newproject/component/const.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:tekram/authentication/model/servise.dart';
+import 'package:tekram/authentication/repository/authentication_repository.dart';
+import 'package:tekram/authentication/screens/signup.dart';
+import 'package:tekram/component/const.dart';
 
 import '../../authentication/repository/user_repo.dart';
 import '../location_repository/location.dart';
@@ -238,7 +237,7 @@ class _MyMapState extends State<MyMap> {
                           margin: EdgeInsets.symmetric(
                               horizontal: size.width * 0.02),
                           decoration: BoxDecoration(
-                              color: Color(mainColor),
+                              color: const Color(mainColor),
                               borderRadius: BorderRadius.circular(15)),
                           child: FlipCard(
                             front: ListTile(
@@ -246,13 +245,13 @@ class _MyMapState extends State<MyMap> {
                                 widget.service.state == 1
                                     ? widget.service.help?.name ?? ''
                                     : 'Searching...',
-                                style: TextStyle(color: Colors.white),
+                                style: const TextStyle(color: Colors.white),
                               ),
                               subtitle: Text(
                                 widget.service.state == 1
                                     ? widget.service.help?.phone ?? ''
                                     : 'Tekram..',
-                                style: TextStyle(color: Colors.white60),
+                                style: const TextStyle(color: Colors.white60),
                               ),
                               trailing:
                                   Image.asset('assets/image/Group 36.png'),
@@ -350,7 +349,7 @@ class PanelWidget extends StatelessWidget {
           ),
         if (userId != service.users!.id)
           ListTile(
-              leading: Image.asset('assets/image/المشروع-03 1.png'),
+              leading: Image.asset('assets/image/project02.png'),
               title: Text(
                 service.users?.name ?? '',
                 style: const TextStyle(fontSize: 22),

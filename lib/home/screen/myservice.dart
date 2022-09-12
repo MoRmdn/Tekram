@@ -1,6 +1,6 @@
 // import 'package:flutter/material.dart';
-// import 'package:newproject/authentication/model/servise.dart';
-// import 'package:newproject/map/screen/map.dart';
+// import 'package:tekram/authentication/model/servise.dart';
+// import 'package:tekram/map/screen/map.dart';
 
 // import 'package:provider/provider.dart';
 

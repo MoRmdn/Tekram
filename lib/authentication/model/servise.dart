@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:newproject/authentication/model/user.dart';
+import 'package:tekram/authentication/model/user.dart';
 
 Service serviceFromJson(String str) => Service.fromJson(json.decode(str));
 

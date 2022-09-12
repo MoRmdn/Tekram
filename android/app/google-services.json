@@ -1,15 +1,16 @@
 {
   "project_info": {
     "project_number": "114864346791",
+    "firebase_url": "https://projectest-85af8-default-rtdb.firebaseio.com",
     "project_id": "projectest-85af8",
     "storage_bucket": "projectest-85af8.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:114864346791:android:a0f4a2b01ca11cf5caed82",
+        "mobilesdk_app_id": "1:114864346791:android:bac850fd37ed1022caed82",
         "android_client_info": {
-          "package_name": "com.example.newproject"
+          "package_name": "com.example.tekram"
         }
       },
       "oauth_client": [

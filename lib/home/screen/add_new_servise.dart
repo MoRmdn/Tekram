@@ -4,10 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:newproject/authentication/model/user.dart';
-import 'package:newproject/authentication/repository/user_repo.dart';
-import 'package:newproject/authentication/screens/signup.dart';
-import 'package:newproject/authentication/widget/primary_botton.dart';
+import 'package:tekram/authentication/model/user.dart';
+import 'package:tekram/authentication/repository/user_repo.dart';
+import 'package:tekram/authentication/screens/signup.dart';
+import 'package:tekram/authentication/widget/primary_botton.dart';
 import 'package:provider/provider.dart';
 
 import '../../authentication/model/servise.dart';

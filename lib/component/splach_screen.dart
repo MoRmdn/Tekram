@@ -1,6 +1,6 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:newproject/component/const.dart';
+import 'package:tekram/component/const.dart';
 import 'package:provider/provider.dart';
 
 import '../authentication/repository/authentication_repository.dart';

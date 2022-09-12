@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:newproject/authentication/model/servise.dart';
+import 'package:tekram/authentication/model/servise.dart';
 
-import 'package:newproject/home/screen/add_new_servise.dart';
-import 'package:newproject/home/screen/home.dart';
-import 'package:newproject/home/screen/myservice.dart';
+import 'package:tekram/home/screen/add_new_servise.dart';
+import 'package:tekram/home/screen/home.dart';
+import 'package:tekram/home/screen/myservice.dart';
 import 'package:provider/provider.dart';
 
 import '../authentication/repository/user_repo.dart';
