@@ -18,9 +18,9 @@ import '../../authentication/repository/user_repo.dart';
 import '../location_repository/location.dart';
 
 class MyMap extends StatefulWidget {
-  final bool myservice;
-  final Service service;
-  const MyMap({Key? key, required this.service, required this.myservice})
+  bool myservice;
+  Service service;
+  MyMap({Key? key, required this.service, required this.myservice})
       : super(key: key);
 
   @override

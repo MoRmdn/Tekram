@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-
 import 'package:tekram/authentication/model/servise.dart';
 
 import '../model/user.dart';
@@ -48,6 +47,7 @@ class UserRepository extends ChangeNotifier {
       var data = value.value as Map;
       user = Users.fromJson(data);
     });
+    notifyListeners();
   }
 
   getHelperUser() {
@@ -69,9 +69,6 @@ class UserRepository extends ChangeNotifier {
       data.forEach((key, value) {
         allService.add(Service.fromJson(value));
         services = allService;
-
-        // .toSet().toList();
-        // print(services);
         notifyListeners();
       });
     });
@@ -96,12 +93,12 @@ class UserRepository extends ChangeNotifier {
         myServices = Service.fromJson(data);
         if (myServices?.titel != null || myServices?.descreption != null) {
           haveService = true;
-          notifyListeners();
         } else {
           haveService = false;
         }
       }
     });
+    notifyListeners();
   }
 
   deleteMyService() {
@@ -112,8 +109,8 @@ class UserRepository extends ChangeNotifier {
         .then((value) {
       _databaceRef.child('Services').child(_auth.currentUser!.uid).remove();
       haveService = false;
-      notifyListeners();
     });
+    notifyListeners();
   }
 
   getUserLocation(double lat, double log) {
@@ -137,6 +134,7 @@ class UserRepository extends ChangeNotifier {
           .child(_auth.currentUser!.uid)
           .update(service.toJson());
     });
+    notifyListeners();
   }
 
   check() {

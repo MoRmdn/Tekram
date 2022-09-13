@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tekram/authentication/model/servise.dart';
-
 import 'package:tekram/home/screen/add_new_servise.dart';
 import 'package:tekram/home/screen/home.dart';
-import 'package:tekram/home/screen/myservice.dart';
-import 'package:provider/provider.dart';
 
 import '../authentication/repository/user_repo.dart';
 import '../component/const.dart';
-import '../map/location_repository/location.dart';
 import '../map/screen/map.dart';
 
 class MainPage extends StatefulWidget {
@@ -31,9 +28,8 @@ class _MainPageState extends State<MainPage> {
     Size size = MediaQuery.of(context).size;
     final page = [
       MyMap(
-        service:
-            Provider.of<UserRepository>(context, listen: false).myServices ??
-                Service(address: Address()),
+        service: Provider.of<UserRepository>(context).myServices ??
+            Service(address: Address()),
         myservice: true,
       ),
       const Home(),
@@ -69,7 +65,7 @@ class _MainPageState extends State<MainPage> {
                             selectedPage = index;
                           });
                         },
-                        child: Container(
+                        child: SizedBox(
                           width: size.width / 2,
                           child: Center(
                               child: Column(
@@ -113,14 +109,18 @@ class _MainPageState extends State<MainPage> {
                       alignment: Alignment.bottomCenter,
                       child: InkWell(
                           onTap: () {
-                            value.isMyService && value.haveService == false
-                                ? Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => AddNewServisc(
-                                            lat: value.latitude,
-                                            log: value.longitude)))
-                                : value.deleteMyService();
+                            if (value.isMyService &&
+                                value.haveService == false) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AddNewServisc(
+                                          lat: value.latitude,
+                                          log: value.longitude)));
+                            } else {
+                              value.deleteMyService();
+                              value.check();
+                            }
                           },
                           child: value.isMyService && value.haveService
                               ? Image.asset('assets/image/Group 12 (3).png')

@@ -1,14 +1,9 @@
-import 'dart:ui';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:provider/provider.dart';
 import 'package:tekram/authentication/model/user.dart';
 import 'package:tekram/authentication/repository/user_repo.dart';
 import 'package:tekram/authentication/screens/signup.dart';
 import 'package:tekram/authentication/widget/primary_botton.dart';
-import 'package:provider/provider.dart';
 
 import '../../authentication/model/servise.dart';
 import '../../authentication/repository/authentication_repository.dart';
@@ -104,6 +99,7 @@ class AddNewServisc extends StatelessWidget {
                         state: 0,
                         help: Users(id: '', name: '', email: '', phone: '')),
                     id);
+                Provider.of<UserRepository>(context, listen: false).check();
                 Navigator.pop(context);
               },
             )
