@@ -8,10 +8,11 @@ import 'package:tekram/authentication/widget/primary_botton.dart';
 import '../../authentication/model/servise.dart';
 import '../../authentication/repository/authentication_repository.dart';
 
-class AddNewServisc extends StatelessWidget {
+// ignore: must_be_immutable
+class AddNewService extends StatelessWidget {
   double lat;
   double log;
-  AddNewServisc({Key? key, required this.lat, required this.log})
+  AddNewService({Key? key, required this.lat, required this.log})
       : super(key: key);
 
   TextEditingController titelController = TextEditingController();

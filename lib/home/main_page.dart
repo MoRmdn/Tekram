@@ -109,12 +109,12 @@ class _MainPageState extends State<MainPage> {
                       alignment: Alignment.bottomCenter,
                       child: InkWell(
                           onTap: () {
-                            if (value.isMyService &&
-                                value.haveService == false) {
+                            if (value.getIsMyService &&
+                                value.getHaveService == false) {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => AddNewServisc(
+                                      builder: (context) => AddNewService(
                                           lat: value.latitude,
                                           log: value.longitude)));
                             } else {
@@ -122,7 +122,7 @@ class _MainPageState extends State<MainPage> {
                               value.check();
                             }
                           },
-                          child: value.isMyService && value.haveService
+                          child: value.getIsMyService && value.getHaveService
                               ? Image.asset('assets/image/Group 12 (3).png')
                               : Image.asset('assets/image/Group 14.png')));
                 },

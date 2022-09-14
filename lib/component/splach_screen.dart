@@ -1,6 +1,5 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:tekram/component/const.dart';
 import 'package:provider/provider.dart';
 
 import '../authentication/repository/authentication_repository.dart';
@@ -21,12 +20,12 @@ class _SplashScreensState extends State<SplashScreens> {
     Size size = MediaQuery.of(context).size;
 
     return Consumer<UserRepository>(
-      builder: (context, value, child) {
+      builder: (context, controller, child) {
         return Consumer<UserRepository>(
           builder: (context, value, child) {
             return AnimatedSplashScreen(
                 duration: 3000,
-                function: value.check(),
+                function: controller.check,
                 splashIconSize: size.height * 0.7,
                 backgroundColor: const Color(0xff1CA568),
                 splashTransition: SplashTransition.sizeTransition,
@@ -43,7 +42,7 @@ class _SplashScreensState extends State<SplashScreens> {
                 nextScreen: Provider.of<AuthenticationRepository>(context,
                             listen: false)
                         .isLogin()
-                    ? MainPage()
+                    ? const MainPage()
                     : Login());
           },
         );

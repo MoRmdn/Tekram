@@ -10,8 +10,8 @@ class UserRepository extends ChangeNotifier {
   final _auth = FirebaseAuth.instance;
   double latitude = -1;
   double longitude = -1;
-  bool isMyService = false;
-  bool haveService = false;
+  bool _isMyService = false;
+  bool _haveService = false;
 
   Users user = Users(
     name: '',
@@ -82,8 +82,8 @@ class UserRepository extends ChangeNotifier {
     // });
   }
 
-  getMyService() {
-    _databaceRef
+  Future<void> fetchMyService() async {
+    await _databaceRef
         .child('MyServices')
         .child(_auth.currentUser!.uid)
         .get()
@@ -92,9 +92,9 @@ class UserRepository extends ChangeNotifier {
         var data = value.value as Map;
         myServices = Service.fromJson(data);
         if (myServices?.titel != null || myServices?.descreption != null) {
-          haveService = true;
+          _haveService = true;
         } else {
-          haveService = false;
+          _haveService = false;
         }
       }
     });
@@ -108,7 +108,7 @@ class UserRepository extends ChangeNotifier {
         .remove()
         .then((value) {
       _databaceRef.child('Services').child(_auth.currentUser!.uid).remove();
-      haveService = false;
+      _haveService = false;
     });
     notifyListeners();
   }
@@ -120,7 +120,7 @@ class UserRepository extends ChangeNotifier {
   }
 
   changeState(bool state) {
-    isMyService = state;
+    _isMyService = state;
   }
 
   canHelp(Service service) {
@@ -137,11 +137,19 @@ class UserRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-  check() {
+  Future<void> check() async {
     if (_auth.currentUser != null) {
       getUser();
-      getMyService();
-      getHelperUser();
+      await fetchMyService();
+      await getHelperUser();
     }
+  }
+
+  bool get getIsMyService {
+    return _isMyService;
+  }
+
+  bool get getHaveService {
+    return _haveService;
   }
 }

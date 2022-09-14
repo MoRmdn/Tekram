@@ -66,6 +66,7 @@ class _MyMapState extends State<MyMap> {
       loadMarker(
           widget.service.address.lat ?? 0, widget.service.address.log ?? 0);
     });
+    Provider.of<UserRepository>(context, listen: false).fetchMyService();
 
     super.initState();
   }
@@ -202,8 +203,8 @@ class _MyMapState extends State<MyMap> {
           //         ],
           //       )),
           Consumer<UserRepository>(
-            builder: (context, value, child) {
-              if (widget.myservice && value.haveService) {
+            builder: (context, controller, child) {
+              if (widget.myservice && controller.getHaveService) {
                 return Positioned(
                   bottom: 100,
                   left: 0,
