@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +8,7 @@ import 'package:tekram/authentication/model/servise.dart';
 import '../model/user.dart';
 
 class UserRepository extends ChangeNotifier {
-  final _databaceRef = FirebaseDatabase.instance.ref();
+  final _dataBaseRef = FirebaseDatabase.instance.ref();
   final _auth = FirebaseAuth.instance;
   double latitude = -1;
   double longitude = -1;
@@ -19,7 +21,7 @@ class UserRepository extends ChangeNotifier {
     id: '',
     phone: '',
   );
-  Users helperUser = Users(
+  UserHelper helperUser = UserHelper(
     name: '',
     email: '',
     id: '',
@@ -28,51 +30,52 @@ class UserRepository extends ChangeNotifier {
   List<Service> services = [];
   Service? myServices;
 
-  void creatNewUser(String id, Users user) {
+  void createNewUser(String id, Users user) {
     user.id = id;
-    _databaceRef.child('User').child(id).set(user.toJson());
+    _dataBaseRef.child('User').child(id).set(user.toJson());
   }
 
   addService(Service service, String id) {
-    _databaceRef.child('Services').child(id).set(service.toJson());
-    _databaceRef.child('MyServices').child(id).set(service.toJson());
+    _dataBaseRef.child('Services').child(id).set(service.toJson());
+    _dataBaseRef.child('MyServices').child(id).set(service.toJson());
   }
 
-  getUser() {
-    _databaceRef
+  Future<void> getUser() async {
+    _dataBaseRef
         .child('User')
         .child(_auth.currentUser!.uid)
         .get()
         .then((value) {
       var data = value.value as Map;
       user = Users.fromJson(data);
+      // _me = Users.fromJson(data);
     });
     notifyListeners();
   }
 
-  getHelperUser() {
-    _databaceRef
+  Future<void> getHelperUser() async {
+    _dataBaseRef
         .child('User')
         .child(_auth.currentUser!.uid)
         .get()
         .then((value) {
       var data = value.value as Map;
-      helperUser = Users.fromJson(data);
-      notifyListeners();
+      helperUser = UserHelper.fromJson(data);
+      log(helperUser.name!);
     });
+    notifyListeners();
   }
 
-  getAllService() {
+  Future<void> getAllService() async {
     List<Service> allService = [];
-    _databaceRef.child('Services').onValue.listen((event) {
+    _dataBaseRef.child('Services').onValue.listen((event) {
       var data = event.snapshot.value as Map;
       data.forEach((key, value) {
         allService.add(Service.fromJson(value));
         services = allService;
-        notifyListeners();
       });
     });
-
+    notifyListeners();
 //    services.clear();
     // _databaceRef.child('Services').get().then((value) {
     //   var data = value.value as Map;
@@ -83,7 +86,7 @@ class UserRepository extends ChangeNotifier {
   }
 
   Future<void> fetchMyService() async {
-    await _databaceRef
+    await _dataBaseRef
         .child('MyServices')
         .child(_auth.currentUser!.uid)
         .get()
@@ -91,7 +94,7 @@ class UserRepository extends ChangeNotifier {
       if (value.exists) {
         var data = value.value as Map;
         myServices = Service.fromJson(data);
-        if (myServices?.titel != null || myServices?.descreption != null) {
+        if (myServices?.title != null || myServices?.description != null) {
           _haveService = true;
         } else {
           _haveService = false;
@@ -101,19 +104,19 @@ class UserRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-  deleteMyService() {
-    _databaceRef
+  Future<void> deleteMyService() async {
+    await _dataBaseRef
         .child('MyServices')
         .child(_auth.currentUser!.uid)
         .remove()
         .then((value) {
-      _databaceRef.child('Services').child(_auth.currentUser!.uid).remove();
+      _dataBaseRef.child('Services').child(_auth.currentUser!.uid).remove();
       _haveService = false;
     });
     notifyListeners();
   }
 
-  getUserLocation(double lat, double log) {
+  void getUserLocation(double lat, double log) {
     latitude = lat;
     longitude = log;
     notifyListeners();
@@ -123,16 +126,13 @@ class UserRepository extends ChangeNotifier {
     _isMyService = state;
   }
 
-  canHelp(Service service) {
-    _databaceRef
+  Future<void> canHelp(Service service, String userUID) async {
+    await _dataBaseRef
         .child('MyServices')
-        .child(_auth.currentUser!.uid)
+        .child(userUID)
         .update(service.toJson())
         .then((value) {
-      _databaceRef
-          .child('Services')
-          .child(_auth.currentUser!.uid)
-          .update(service.toJson());
+      _dataBaseRef.child('Services').child(userUID).update(service.toJson());
     });
     notifyListeners();
   }
@@ -141,7 +141,6 @@ class UserRepository extends ChangeNotifier {
     if (_auth.currentUser != null) {
       getUser();
       await fetchMyService();
-      await getHelperUser();
     }
   }
 

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tekram/authentication/repository/authentication_repository.dart';
-
-import 'package:tekram/authentication/screens/signup.dart';
-
 import 'package:provider/provider.dart';
+import 'package:tekram/authentication/repository/authentication_repository.dart';
+import 'package:tekram/authentication/screens/signup.dart';
 
 import '../../home/main_page.dart';
 import '../widget/auth_text_field.dart';
@@ -30,7 +28,7 @@ class Login extends StatelessWidget {
                     height: size.height * 0.07,
                   ),
                   size: size,
-                  titel: 'Login',
+                  title: 'Login',
                 ),
                 Image.asset(
                   'assets/image/MicrosoftTeams-image.png',

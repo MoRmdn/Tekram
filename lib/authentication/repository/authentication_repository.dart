@@ -27,7 +27,7 @@ class AuthenticationRepository extends ChangeNotifier {
             email: user.email ?? '', password: password)
         .then((value) {
       onProsses();
-      userRepository.creatNewUser(value.user!.uid, user);
+      userRepository.createNewUser(value.user!.uid, user);
       EasyLoading.showSuccess('Sign Up successfully');
     }).catchError((e) {
       EasyLoading.dismiss();
