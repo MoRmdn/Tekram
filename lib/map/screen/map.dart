@@ -7,12 +7,12 @@ import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:newproject/authentication/model/servise.dart';
+import 'package:newproject/authentication/repository/authentication_repository.dart';
+import 'package:newproject/authentication/screens/signup.dart';
+import 'package:newproject/component/const.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:tekram/authentication/model/servise.dart';
-import 'package:tekram/authentication/repository/authentication_repository.dart';
-import 'package:tekram/authentication/screens/signup.dart';
-import 'package:tekram/component/const.dart';
 
 import '../../authentication/repository/user_repo.dart';
 import '../location_repository/location.dart';
@@ -28,7 +28,7 @@ class MyMap extends StatefulWidget {
 }
 
 class _MyMapState extends State<MyMap> {
-  final databaceRef = FirebaseDatabase.instance.ref();
+  final dataBaseRef = FirebaseDatabase.instance.ref();
   final auth = FirebaseAuth.instance;
   LocationRepository locationRepository = LocationRepository();
   final Completer<GoogleMapController> _controller = Completer();
@@ -48,9 +48,15 @@ class _MyMapState extends State<MyMap> {
         .asUint8List();
   }
 
+  @override
+  void dispose() {
+    googleMapController.dispose();
+    super.dispose();
+  }
+
   final CameraPosition _kGooglePlex = const CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
+    target: LatLng(30.5852, 36.2384),
+    zoom: 7,
   );
   @override
   void initState() {
@@ -250,7 +256,7 @@ class _MyMapState extends State<MyMap> {
                                 subtitle: Text(
                                   widget.service.state == 1
                                       ? widget.service.help?.phone ?? ''
-                                      : 'Tekram..',
+                                      : 'newproject..',
                                   style: const TextStyle(color: Colors.white60),
                                 ),
                                 trailing:
@@ -325,16 +331,15 @@ class PanelWidget extends StatelessWidget {
   final bool myService;
   final Service service;
   final ScrollController controller;
-  const PanelWidget({
-    Key? key,
-    required this.controller,
-    required this.service,
-    required this.myService,
-  }) : super(key: key);
+  const PanelWidget(
+      {Key? key,
+      required this.controller,
+      required this.service,
+      required this.myService})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<UserRepository>(context, listen: false).getHelperUser();
     var userId = Provider.of<AuthenticationRepository>(context, listen: false)
         .currentUserId();
     Size size = MediaQuery.of(context).size;
@@ -343,68 +348,47 @@ class PanelWidget extends StatelessWidget {
       children: [
         if (userId == service.users!.id)
           Container(
-            margin: const EdgeInsets.all(15),
+            margin: const EdgeInsets.only(left: 15, top: 5, bottom: 40),
             child: const Text(
               'My urgent help request',
               style: TextStyle(color: Color(mainColor), fontSize: 25),
             ),
           ),
         if (userId != service.users!.id)
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Image.asset('assets/image/project02.png'),
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          service.users?.name ?? '',
-                          style: const TextStyle(fontSize: 22),
-                        ),
-                        Text(
-                          service.title ?? '',
-                          style: const TextStyle(fontSize: 17),
-                        ),
-                      ],
-                    ),
-                    if (myService == false && service.state == 0)
-                      InkWell(
-                        onTap: () {
-                          Provider.of<UserRepository>(context, listen: false)
-                              .canHelp(
-                            Service(
-                              userUID: FirebaseAuth.instance.currentUser!.uid,
-                              address: service.address,
-                              users: service.users,
-                              state: 1,
-                              title: service.title,
-                              description: service.description,
-                              help: Provider.of<UserRepository>(
-                                context,
-                                listen: false,
-                              ).helperUser,
-                            ),
-                            service.userUID,
-                          );
-                          Navigator.of(context).pop();
-                        },
-                        child: Image.asset(
-                          'assets/image/Group 53.png',
-                        ),
-                      ),
-                  ],
-                ),
-              ],
-            ),
-          ),
+          ListTile(
+              leading: Image.asset('assets/image/project03.png'),
+              title: Text(
+                service.users?.name ?? '',
+                style: const TextStyle(fontSize: 22),
+              ),
+              subtitle: Text(
+                service.title ?? '',
+                style: const TextStyle(fontSize: 17),
+              ),
+              trailing: myService == false && service.state == 0
+                  ? InkWell(
+                      onTap: () {
+                        Provider.of<UserRepository>(context, listen: false)
+                            .canHelp(
+                          Service(
+                            userUID: FirebaseAuth.instance.currentUser!.uid,
+                            address: service.address,
+                            users: service.users,
+                            state: 1,
+                            title: service.title,
+                            description: service.description,
+                            help: Provider.of<UserRepository>(
+                              context,
+                              listen: false,
+                            ).helperUser,
+                          ),
+                          service.userUID,
+                        );
+                        Navigator.of(context).pop();
+                      },
+                      child: Image.asset('assets/image/Group 53.png'),
+                    )
+                  : const SizedBox()),
         Container(
           margin: EdgeInsets.only(left: size.width * 0.2),
           child: Column(
@@ -435,7 +419,7 @@ class PanelWidget extends StatelessWidget {
                       color: const Color(mainColor),
                     )),
                 child: Text(
-                  service.description ?? 'No description',
+                  service.description ?? 'no description',
                   style: const TextStyle(color: Colors.black54),
                 ),
               ),

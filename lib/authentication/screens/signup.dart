@@ -1,10 +1,10 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:newproject/authentication/model/user.dart';
+import 'package:newproject/authentication/repository/authentication_repository.dart';
+import 'package:newproject/authentication/widget/auth_text_field.dart';
+import 'package:newproject/home/main_page.dart';
 import 'package:provider/provider.dart';
-import 'package:tekram/authentication/model/user.dart';
-import 'package:tekram/authentication/repository/authentication_repository.dart';
-import 'package:tekram/authentication/widget/auth_text_field.dart';
-import 'package:tekram/home/main_page.dart';
 
 import '../widget/primary_botton.dart';
 

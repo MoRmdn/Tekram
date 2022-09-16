@@ -1,9 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:tekram/authentication/repository/user_repo.dart';
-import 'package:tekram/authentication/screens/login.dart';
-
+import 'package:newproject/authentication/repository/user_repo.dart';
+import 'package:newproject/authentication/screens/login.dart';
 import 'package:provider/provider.dart';
 
 import 'authentication/repository/authentication_repository.dart';
@@ -33,7 +32,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: "//",
       routes: {
-        "//": (context) => SplashScreens(),
+        "//": (context) => const SplashScreens(),
         "/": (context) => const MainPage(),
         "/login": (context) => Login()
       },

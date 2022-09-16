@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:114864346791:android:bac850fd37ed1022caed82",
+        "mobilesdk_app_id": "1:114864346791:android:bd53d584c7baa371caed82",
         "android_client_info": {
-          "package_name": "com.example.tekram"
+          "package_name": "com.example.newproject"
         }
       },
       "oauth_client": [

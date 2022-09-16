@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:tekram/authentication/repository/user_repo.dart';
+import 'package:newproject/authentication/repository/user_repo.dart';
 
 import '../model/user.dart';
 import 'auth_exeption.dart';

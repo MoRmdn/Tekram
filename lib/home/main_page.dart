@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:newproject/authentication/model/servise.dart';
+import 'package:newproject/authentication/model/user.dart';
+import 'package:newproject/home/screen/add_new_servise.dart';
+import 'package:newproject/home/screen/home.dart';
 import 'package:provider/provider.dart';
-import 'package:tekram/authentication/model/servise.dart';
-import 'package:tekram/authentication/model/user.dart';
-import 'package:tekram/home/screen/add_new_servise.dart';
-import 'package:tekram/home/screen/home.dart';
 
 import '../authentication/repository/user_repo.dart';
 import '../component/const.dart';

@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:tekram/authentication/model/servise.dart';
+import 'package:newproject/authentication/model/servise.dart';
 
 import '../model/user.dart';
 
@@ -116,7 +116,7 @@ class UserRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-  void getUserLocation(double lat, double log) {
+  Future<void> getUserLocation(double lat, double log) async {
     latitude = lat;
     longitude = log;
     notifyListeners();

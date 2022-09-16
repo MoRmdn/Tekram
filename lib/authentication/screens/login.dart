@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:newproject/authentication/repository/authentication_repository.dart';
+import 'package:newproject/authentication/screens/signup.dart';
 import 'package:provider/provider.dart';
-import 'package:tekram/authentication/repository/authentication_repository.dart';
-import 'package:tekram/authentication/screens/signup.dart';
 
 import '../../home/main_page.dart';
 import '../widget/auth_text_field.dart';

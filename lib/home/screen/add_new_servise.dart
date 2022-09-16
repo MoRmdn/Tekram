@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:newproject/authentication/repository/user_repo.dart';
+import 'package:newproject/authentication/screens/signup.dart';
+import 'package:newproject/authentication/widget/primary_botton.dart';
 import 'package:provider/provider.dart';
-import 'package:tekram/authentication/repository/user_repo.dart';
-import 'package:tekram/authentication/screens/signup.dart';
-import 'package:tekram/authentication/widget/primary_botton.dart';
 
 import '../../authentication/model/servise.dart';
 import '../../authentication/repository/authentication_repository.dart';
