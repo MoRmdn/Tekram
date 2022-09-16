@@ -37,7 +37,7 @@ class _HomeState extends State<Home> {
               children: [
                 MainAppBar(
                   size: size,
-                  titel: 'Community',
+                  title: 'Community',
                   icon: const SizedBox(),
                 ),
                 SizedBox(
@@ -50,7 +50,6 @@ class _HomeState extends State<Home> {
                           (context, AsyncSnapshot<DatabaseEvent> snapshot) {
                         if (snapshot.data?.snapshot.value == null) {
                           return Container(
-                            margin: EdgeInsets.only(top: size.height * 0.2),
                             child: Column(
                               children: [
                                 Image.asset(
@@ -87,7 +86,7 @@ class _HomeState extends State<Home> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => MyMap(
-                                                myservice: false,
+                                                myService: false,
                                                 service: services[index],
                                               )));
                                 },
@@ -122,7 +121,7 @@ class _HomeState extends State<Home> {
                                               ? Colors.white
                                               : Colors.black),
                                     ),
-                                    subtitle: Text(services[index].titel ?? '',
+                                    subtitle: Text(services[index].title ?? '',
                                         style: TextStyle(
                                             color: services[index].state == 1
                                                 ? Colors.white

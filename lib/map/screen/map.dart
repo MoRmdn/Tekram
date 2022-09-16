@@ -18,9 +18,9 @@ import '../../authentication/repository/user_repo.dart';
 import '../location_repository/location.dart';
 
 class MyMap extends StatefulWidget {
-  bool myservice;
+  bool myService;
   Service service;
-  MyMap({Key? key, required this.service, required this.myservice})
+  MyMap({Key? key, required this.service, required this.myService})
       : super(key: key);
 
   @override
@@ -89,20 +89,33 @@ class _MyMapState extends State<MyMap> {
     // Provider.of<UserRepository>(context, listen: false).getMyService();
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Stack(
-        children: [
-          widget.myservice == false
-              ? SlidingUpPanel(
-                  parallaxEnabled: true,
-                  maxHeight: size.height * 0.47,
-                  borderRadius:
-                      const BorderRadius.vertical(top: Radius.circular(30)),
-                  panelBuilder: (controller) => PanelWidget(
-                    controller: controller,
-                    service: widget.service,
-                    myservice: widget.myservice,
-                  ),
-                  body: GoogleMap(
+      body: SafeArea(
+        child: Stack(
+          children: [
+            widget.myService == false
+                ? SlidingUpPanel(
+                    parallaxEnabled: true,
+                    maxHeight: size.height * 0.47,
+                    borderRadius:
+                        const BorderRadius.vertical(top: Radius.circular(30)),
+                    panelBuilder: (controller) => PanelWidget(
+                      controller: controller,
+                      service: widget.service,
+                      myService: widget.myService,
+                    ),
+                    body: GoogleMap(
+                      markers: marker,
+                      initialCameraPosition: _kGooglePlex,
+                      onMapCreated: (GoogleMapController controller) async {
+                        String style = await DefaultAssetBundle.of(context)
+                            .loadString('assets/map.json');
+                        controller.setMapStyle(style);
+                        _controller.complete(controller);
+                        googleMapController = controller;
+                      },
+                    ),
+                  )
+                : GoogleMap(
                     markers: marker,
                     initialCameraPosition: _kGooglePlex,
                     onMapCreated: (GoogleMapController controller) async {
@@ -113,194 +126,181 @@ class _MyMapState extends State<MyMap> {
                       googleMapController = controller;
                     },
                   ),
-                )
-              : GoogleMap(
-                  markers: marker,
-                  initialCameraPosition: _kGooglePlex,
-                  onMapCreated: (GoogleMapController controller) async {
-                    String style = await DefaultAssetBundle.of(context)
-                        .loadString('assets/map.json');
-                    controller.setMapStyle(style);
-                    _controller.complete(controller);
-                    googleMapController = controller;
-                  },
-                ),
-          if (widget.myservice)
-            MainAppBar(
-              size: size,
-              titel: 'Me',
-              onTap: () {
-                Provider.of<AuthenticationRepository>(context, listen: false)
-                    .signOut();
-                Navigator.restorablePushNamed(context, "/login");
-              },
-              icon: const Padding(
-                padding: EdgeInsets.only(left: 20, bottom: 30),
-                child: Icon(
-                  Icons.logout,
-                  color: Colors.black26,
-                ),
-              ),
-            )
-          else
-            MainAppBar(
-              size: size,
-              titel: 'Community',
-              icon: const SizedBox(),
-            ),
-          // if (widget.myservice == false)
-          //   Positioned(
-          //       bottom: 0,
-          //       left: 0,
-          //       right: 0,
-          //       child: Stack(
-          //         children: [
-          //           Container(
-          //             width: double.infinity,
-          //             decoration: BoxDecoration(
-          //                 boxShadow: [
-          //                   BoxShadow(
-          //                       offset: const Offset(0, 0),
-          //                       blurRadius: 17,
-          //                       color: Colors.black.withAlpha(25))
-          //                 ],
-          //                 color: Colors.white,
-          //                 borderRadius: const BorderRadius.only(
-          //                     topLeft: Radius.circular(20),
-          //                     topRight: Radius.circular(20))),
-          //             height: size.height * 0.3,
-          //             child: Column(
-          //               children: [
-          //                 Padding(
-          //                   padding: EdgeInsets.only(
-          //                       top: size.height * 0.11, bottom: 15),
-          //                   child: Text(
-          //                     widget.service.users!.name ?? '',
-          //                     style: const TextStyle(fontSize: 32),
-          //                   ),
-          //                 ),
-          //                 Padding(
-          //                   padding: const EdgeInsets.only(
-          //                     bottom: 9,
-          //                   ),
-          //                   child: Text(
-          //                     widget.service.titel ?? '',
-          //                     style: const TextStyle(fontSize: 24),
-          //                   ),
-          //                 ),
-          //                 Text(
-          //                   widget.service.users!.phone ?? '',
-          //                   style: const TextStyle(fontSize: 24),
-          //                 ),
-          //                 // userId == widget.service.users!.id
-          //                 //     ? ElevatedButton(
-          //                 //         onPressed: () {}, child: Text('ACCEPTED'))
-          //                 //     : ElevatedButton(
-          //                 //         onPressed: () {}, child: Text('can Helpe'))
-          //               ],
-          //             ),
-          //           ),
-          //         ],
-          //       )),
-          Consumer<UserRepository>(
-            builder: (context, controller, child) {
-              if (widget.myservice && controller.getHaveService) {
-                return Positioned(
-                  bottom: 100,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    padding: const EdgeInsets.only(top: 15),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(19),
-                        border: Border.all(color: const Color(mainColor))),
-                    height: size.height * 0.23,
-                    width: double.infinity,
-                    margin: EdgeInsets.only(
-                        left: size.width * 0.1,
-                        right: size.width * 0.1,
-                        bottom: size.height * 0.08),
-                    child: Column(
-                      children: [
-                        Text(
-                          widget.service.users?.name ?? '',
-                          style: const TextStyle(fontSize: 24),
-                        ),
-                        Text(
-                          widget.service.titel ?? '',
-                          style: const TextStyle(fontSize: 20),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: size.width * 0.02),
-                          decoration: BoxDecoration(
-                              color: const Color(mainColor),
-                              borderRadius: BorderRadius.circular(15)),
-                          child: FlipCard(
-                            front: ListTile(
-                              title: Text(
-                                widget.service.state == 1
-                                    ? widget.service.help?.name ?? ''
-                                    : 'Searching...',
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                              subtitle: Text(
-                                widget.service.state == 1
-                                    ? widget.service.help?.phone ?? ''
-                                    : 'Tekram..',
-                                style: const TextStyle(color: Colors.white60),
-                              ),
-                              trailing:
-                                  Image.asset('assets/image/Group 36.png'),
-                            ),
-                            back: InkWell(
-                              onTap: () {
-                                Provider.of<UserRepository>(context,
-                                        listen: false)
-                                    .deleteMyService();
-                              },
-                              child: const Center(
-                                  child: Text(
-                                'Done',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 19),
-                              )),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
+            if (widget.myService)
+              MainAppBar(
+                size: size,
+                title: 'Me',
+                onTap: () {
+                  Provider.of<AuthenticationRepository>(context, listen: false)
+                      .signOut();
+                  Navigator.restorablePushNamed(context, "/login");
+                },
+                icon: const Padding(
+                  padding: EdgeInsets.only(left: 20, bottom: 30),
+                  child: Icon(
+                    Icons.logout,
+                    color: Colors.black26,
                   ),
-                );
-              } else {
-                return const SizedBox();
-              }
-            },
-          ),
-          // if (widget.myservice == false && widget.service.state == 0)
-          //   Positioned(
-          //       left: 0,
-          //       right: 0,
-          //       bottom: 0,
-          //       child: InkWell(
-          //           onTap: () {
-          //             Provider.of<UserRepository>(context, listen: false)
-          //                 .canHelp(Service(
-          //                     address: widget.service.address,
-          //                     users: widget.service.users,
-          //                     state: 1,
-          //                     titel: widget.service.titel,
-          //                     descreption: widget.service.descreption,
-          //                     help: Provider.of<UserRepository>(context,
-          //                             listen: false)
-          //                         .helperUser));
-          //           },
-          //           child: Image.asset('assets/image/Group 51.png'))),
-        ],
+                ),
+              )
+            else
+              MainAppBar(
+                size: size,
+                title: 'Community',
+                icon: const SizedBox(),
+              ),
+            // if (widget.myservice == false)
+            //   Positioned(
+            //       bottom: 0,
+            //       left: 0,
+            //       right: 0,
+            //       child: Stack(
+            //         children: [
+            //           Container(
+            //             width: double.infinity,
+            //             decoration: BoxDecoration(
+            //                 boxShadow: [
+            //                   BoxShadow(
+            //                       offset: const Offset(0, 0),
+            //                       blurRadius: 17,
+            //                       color: Colors.black.withAlpha(25))
+            //                 ],
+            //                 color: Colors.white,
+            //                 borderRadius: const BorderRadius.only(
+            //                     topLeft: Radius.circular(20),
+            //                     topRight: Radius.circular(20))),
+            //             height: size.height * 0.3,
+            //             child: Column(
+            //               children: [
+            //                 Padding(
+            //                   padding: EdgeInsets.only(
+            //                       top: size.height * 0.11, bottom: 15),
+            //                   child: Text(
+            //                     widget.service.users!.name ?? '',
+            //                     style: const TextStyle(fontSize: 32),
+            //                   ),
+            //                 ),
+            //                 Padding(
+            //                   padding: const EdgeInsets.only(
+            //                     bottom: 9,
+            //                   ),
+            //                   child: Text(
+            //                     widget.service.titel ?? '',
+            //                     style: const TextStyle(fontSize: 24),
+            //                   ),
+            //                 ),
+            //                 Text(
+            //                   widget.service.users!.phone ?? '',
+            //                   style: const TextStyle(fontSize: 24),
+            //                 ),
+            //                 // userId == widget.service.users!.id
+            //                 //     ? ElevatedButton(
+            //                 //         onPressed: () {}, child: Text('ACCEPTED'))
+            //                 //     : ElevatedButton(
+            //                 //         onPressed: () {}, child: Text('can Helpe'))
+            //               ],
+            //             ),
+            //           ),
+            //         ],
+            //       )),
+            Consumer<UserRepository>(
+              builder: (context, controller, child) {
+                if (widget.myService && controller.getHaveService) {
+                  return Positioned(
+                    bottom: 100,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      margin: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(19),
+                          border: Border.all(color: const Color(mainColor))),
+                      height: size.height * 0.23,
+                      width: double.infinity,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            widget.service.users?.name ?? '',
+                            style: const TextStyle(fontSize: 24),
+                          ),
+                          Text(
+                            widget.service.title ?? '',
+                            style: const TextStyle(fontSize: 20),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: size.width * 0.02),
+                            decoration: BoxDecoration(
+                                color: const Color(mainColor),
+                                borderRadius: BorderRadius.circular(15)),
+                            child: FlipCard(
+                              front: ListTile(
+                                title: Text(
+                                  widget.service.state == 1
+                                      ? widget.service.help?.name ?? ''
+                                      : 'Searching...',
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                                subtitle: Text(
+                                  widget.service.state == 1
+                                      ? widget.service.help?.phone ?? ''
+                                      : 'Tekram..',
+                                  style: const TextStyle(color: Colors.white60),
+                                ),
+                                trailing:
+                                    Image.asset('assets/image/Group 36.png'),
+                              ),
+                              back: InkWell(
+                                onTap: () {
+                                  Provider.of<UserRepository>(context,
+                                          listen: false)
+                                      .deleteMyService();
+                                },
+                                child: const Center(
+                                    child: Text(
+                                  'Done',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 19),
+                                )),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                } else {
+                  return const SizedBox();
+                }
+              },
+            ),
+            // if (widget.myservice == false && widget.service.state == 0)
+            //   Positioned(
+            //       left: 0,
+            //       right: 0,
+            //       bottom: 0,
+            //       child: InkWell(
+            //           onTap: () {
+            //             Provider.of<UserRepository>(context, listen: false)
+            //                 .canHelp(Service(
+            //                     address: widget.service.address,
+            //                     users: widget.service.users,
+            //                     state: 1,
+            //                     titel: widget.service.titel,
+            //                     descreption: widget.service.descreption,
+            //                     help: Provider.of<UserRepository>(context,
+            //                             listen: false)
+            //                         .helperUser));
+            //           },
+            //           child: Image.asset('assets/image/Group 51.png'))),
+          ],
+        ),
       ),
     );
   }
@@ -322,18 +322,19 @@ class _MyMapState extends State<MyMap> {
 }
 
 class PanelWidget extends StatelessWidget {
-  final bool myservice;
+  final bool myService;
   final Service service;
   final ScrollController controller;
-  const PanelWidget(
-      {Key? key,
-      required this.controller,
-      required this.service,
-      required this.myservice})
-      : super(key: key);
+  const PanelWidget({
+    Key? key,
+    required this.controller,
+    required this.service,
+    required this.myService,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<UserRepository>(context, listen: false).getHelperUser();
     var userId = Provider.of<AuthenticationRepository>(context, listen: false)
         .currentUserId();
     Size size = MediaQuery.of(context).size;
@@ -342,40 +343,68 @@ class PanelWidget extends StatelessWidget {
       children: [
         if (userId == service.users!.id)
           Container(
-            margin: const EdgeInsets.only(left: 15, top: 5, bottom: 40),
+            margin: const EdgeInsets.all(15),
             child: const Text(
               'My urgent help request',
               style: TextStyle(color: Color(mainColor), fontSize: 25),
             ),
           ),
         if (userId != service.users!.id)
-          ListTile(
-              leading: Image.asset('assets/image/project02.png'),
-              title: Text(
-                service.users?.name ?? '',
-                style: const TextStyle(fontSize: 22),
-              ),
-              subtitle: Text(
-                service.titel ?? '',
-                style: const TextStyle(fontSize: 17),
-              ),
-              trailing: myservice == false && service.state == 0
-                  ? InkWell(
-                      onTap: () {
-                        Provider.of<UserRepository>(context, listen: false)
-                            .canHelp(Service(
-                                address: service.address,
-                                users: service.users,
-                                state: 1,
-                                titel: service.titel,
-                                descreption: service.descreption,
-                                help: Provider.of<UserRepository>(context,
-                                        listen: false)
-                                    .helperUser));
-                      },
-                      child: Image.asset('assets/image/Group 53.png'),
-                    )
-                  : const SizedBox()),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset('assets/image/project02.png'),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          service.users?.name ?? '',
+                          style: const TextStyle(fontSize: 22),
+                        ),
+                        Text(
+                          service.title ?? '',
+                          style: const TextStyle(fontSize: 17),
+                        ),
+                      ],
+                    ),
+                    if (myService == false && service.state == 0)
+                      InkWell(
+                        onTap: () {
+                          Provider.of<UserRepository>(context, listen: false)
+                              .canHelp(
+                            Service(
+                              userUID: FirebaseAuth.instance.currentUser!.uid,
+                              address: service.address,
+                              users: service.users,
+                              state: 1,
+                              title: service.title,
+                              description: service.description,
+                              help: Provider.of<UserRepository>(
+                                context,
+                                listen: false,
+                              ).helperUser,
+                            ),
+                            service.userUID,
+                          );
+                          Navigator.of(context).pop();
+                        },
+                        child: Image.asset(
+                          'assets/image/Group 53.png',
+                        ),
+                      ),
+                  ],
+                ),
+              ],
+            ),
+          ),
         Container(
           margin: EdgeInsets.only(left: size.width * 0.2),
           child: Column(
@@ -386,7 +415,7 @@ class PanelWidget extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 10),
                   child: Text(
-                    'Title :  ${service.titel ?? ''}',
+                    'Title :  ${service.title ?? ''}',
                     style: const TextStyle(fontSize: 17),
                   ),
                 ),
@@ -406,7 +435,7 @@ class PanelWidget extends StatelessWidget {
                       color: const Color(mainColor),
                     )),
                 child: Text(
-                  service.descreption ?? 'no descreption',
+                  service.description ?? 'No description',
                   style: const TextStyle(color: Colors.black54),
                 ),
               ),

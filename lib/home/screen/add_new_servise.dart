@@ -1,6 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tekram/authentication/model/user.dart';
 import 'package:tekram/authentication/repository/user_repo.dart';
 import 'package:tekram/authentication/screens/signup.dart';
 import 'package:tekram/authentication/widget/primary_botton.dart';
@@ -15,7 +15,7 @@ class AddNewService extends StatelessWidget {
   AddNewService({Key? key, required this.lat, required this.log})
       : super(key: key);
 
-  TextEditingController titelController = TextEditingController();
+  TextEditingController titleController = TextEditingController();
   TextEditingController desController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -24,12 +24,13 @@ class AddNewService extends StatelessWidget {
             .currentUserId() ??
         '';
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
         child: Column(
           children: [
             MainAppBar(
               size: size,
-              titel: 'Help Request',
+              title: 'Help Request',
               onTap: () => Navigator.pop(context),
             ),
             Padding(
@@ -49,7 +50,7 @@ class AddNewService extends StatelessWidget {
                       vertical: size.height * 0.02,
                     ),
                     child: TextFormField(
-                      controller: titelController,
+                      controller: titleController,
                       decoration: InputDecoration(
                         hintText: 'Title',
                         focusedBorder: OutlineInputBorder(
@@ -91,14 +92,14 @@ class AddNewService extends StatelessWidget {
               onPressed: () {
                 Provider.of<UserRepository>(context, listen: false).addService(
                     Service(
-                        address: Address(lat: lat, log: log),
-                        titel: titelController.text,
-                        descreption: desController.text,
-                        users:
-                            Provider.of<UserRepository>(context, listen: false)
-                                .user,
-                        state: 0,
-                        help: Users(id: '', name: '', email: '', phone: '')),
+                      userUID: FirebaseAuth.instance.currentUser!.uid,
+                      address: Address(lat: lat, log: log),
+                      title: titleController.text,
+                      description: desController.text,
+                      users: Provider.of<UserRepository>(context, listen: false)
+                          .user,
+                      state: 0,
+                    ),
                     id);
                 Provider.of<UserRepository>(context, listen: false).check();
                 Navigator.pop(context);

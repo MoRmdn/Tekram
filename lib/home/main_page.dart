@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tekram/authentication/model/servise.dart';
+import 'package:tekram/authentication/model/user.dart';
 import 'package:tekram/home/screen/add_new_servise.dart';
 import 'package:tekram/home/screen/home.dart';
 
@@ -29,8 +31,11 @@ class _MainPageState extends State<MainPage> {
     final page = [
       MyMap(
         service: Provider.of<UserRepository>(context).myServices ??
-            Service(address: Address()),
-        myservice: true,
+            Service(
+                address: Address(),
+                userUID: FirebaseAuth.instance.currentUser!.uid,
+                help: UserHelper(email: '', id: '', name: '', phone: '')),
+        myService: true,
       ),
       const Home(),
     ];
