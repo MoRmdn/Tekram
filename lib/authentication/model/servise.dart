@@ -7,36 +7,40 @@ Service serviceFromJson(String str) => Service.fromJson(json.decode(str));
 String serviceToJson(Service data) => json.encode(data.toJson());
 
 class Service {
-  Service(
-      {this.users,
-      required this.address,
-      this.titel,
-      this.descreption,
-      this.state,
-      this.help});
-
+  Service({
+    this.users,
+    required this.address,
+    this.title,
+    this.description,
+    this.state,
+    this.help,
+    required this.userUID,
+  });
   Users? users;
   Address address;
-  String? titel;
-  String? descreption;
+  String? title;
+  String? description;
   int? state;
-  Users? help;
+  UserHelper? help;
+  String userUID;
   factory Service.fromJson(Map json) => Service(
         users: Users.fromJson(json["Users"]),
         address: Address.fromJson(json["Address"]),
-        descreption: json["descreption"],
-        titel: json["titel"],
+        description: json["description"],
+        title: json["title"],
         state: json['state'],
-        help: Users.fromJson(json["help"]),
+        help: UserHelper.fromJson(json["help"]),
+        userUID: json["userUID"],
       );
 
   Map<String, dynamic> toJson() => {
         "Users": users?.toJson(),
         "Address": address.toJson(),
-        "descreption": descreption,
-        "titel": titel,
+        "description": description,
+        "title": title,
         "state": state,
-        'help': users?.toJson(),
+        'help': help?.toJson(),
+        "userUID": userUID,
       };
 }
 
