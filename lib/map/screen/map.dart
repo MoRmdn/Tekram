@@ -256,7 +256,7 @@ class _MyMapState extends State<MyMap> {
                                 subtitle: Text(
                                   widget.service.state == 1
                                       ? widget.service.help?.phone ?? ''
-                                      : 'newproject..',
+                                      : 'Tekram..',
                                   style: const TextStyle(color: Colors.white60),
                                 ),
                                 trailing:
@@ -340,6 +340,7 @@ class PanelWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<UserRepository>(context, listen: false).getHelperUser();
     var userId = Provider.of<AuthenticationRepository>(context, listen: false)
         .currentUserId();
     Size size = MediaQuery.of(context).size;
