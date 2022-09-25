@@ -313,7 +313,7 @@ class _MyMapState extends State<MyMap> {
 
   void loadMarker(double latitude, double longitude) async {
     final Uint8List merkerIcon =
-        await getBytesFromAssets('assets/image/المشروع-03 1.png', 120);
+        await getBytesFromAssets('assets/image/project03.png', 120);
 
     googleMapController.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(target: LatLng(latitude, longitude), zoom: 14)));
